@@ -1,6 +1,6 @@
 {
   "description": "影视仓 / TVBox 配置源列表（2026-10 更新）：替换失效域名，保留肥猫、饭太硬、王二小、老刘备、小马、讴歌、4K小盒子、小盒子单仓、拾光多仓、挺好分享多仓等公开接口",
-  "update_interval_hours": 12,
+  "update_interval_hours": 6,
   "sources": [
     {
       "id": "feimao",
@@ -17,6 +17,8 @@
       "urls": [
         "http://www.饭太硬.net/tv",
         "http://www.饭太硬.cc/tv",
+        "http://www.饭太硬.com/tv",
+        "http://饭太硬.top/tv",
         "http://www.饭太硬.xyz/tv"
       ]
     },
@@ -48,7 +50,9 @@
       "name": "讴歌",
       "urls": [
         "http://tv.nxog.top/m/",
-        "https://欧歌.v.nxog.top/m/"
+        "https://tv.nxog.top/m/",
+        "https://欧歌.v.nxog.top/m/",
+        "http://欧歌.v.nxog.top/m/"
       ]
     },
     {
