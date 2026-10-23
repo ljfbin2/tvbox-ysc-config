@@ -1,7 +1,7 @@
 # 影视仓配置聚合仓库（TVBox Config Aggregator）
 
-![配置状态](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FLightconer%2Ftvbox-ysc-config%2Fmain%2Foutput%2Fshield.json)
-![更新频率](https://img.shields.io/badge/%E6%9B%B4%E6%96%B0-%E6%AF%8F%E5%A4%A9%202%20%E6%AC%A1-blue)
+![配置状态](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fljfbin2%2Ftvbox-ysc-config%2Fmain%2Foutput%2Fshield.json)
+![更新频率](https://img.shields.io/badge/%E6%9B%B4%E6%96%B0-%E6%AF%8F%206%20%E5%B0%8F%E6%97%B6%201%20%E6%AC%A1-blue)
 
 聚合 **肥猫、饭太硬、王二小、老刘备、小马、讴歌（欧歌）、4K小盒子、小盒子单仓、拾光多仓、挺好分享多仓** 等多个影视仓 / TVBox 单仓配置，通过 **GitHub Actions 定时自动更新**，并把结果直接提交回本仓库，供影视仓、TVBox、OK影视等软件随时拉取最新接口。
 
@@ -52,18 +52,18 @@ tvbox-ysc-config/
 
 | 类型 | 地址 | 说明 |
 | --- | --- | --- |
-| **多仓订阅（推荐）** | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/多仓订阅.json` | App 内可在各源之间切换 |
-| **单仓聚合** | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/单仓聚合.json` | 所有源站点合并成一个，无需切换 |
-| 单仓 · 肥猫 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/feimao.json` | 单独使用某一个源 |
-| 单仓 · 饭太硬 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/fantaiying.json` | |
-| 单仓 · 王二小 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/wangerxiao.json` | |
-| 单仓 · 老刘备 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/laoliubei.json` | |
-| 单仓 · 小马 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/xiaoma.json` | |
-| 单仓 · 讴歌 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/ouge.json` | |
-| 单仓 · 4K小盒子 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/4k.json` | |
-| 单仓 · 小盒子单仓 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/xiaohezi.json` | |
-| 单仓 · 拾光多仓 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/shiguang.json` | |
-| 单仓 · 挺好分享多仓 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/tinghao.json` | |
+| **多仓订阅（推荐）** | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/多仓订阅.json` | App 内可在各源之间切换 |
+| **单仓聚合** | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/单仓聚合.json` | 所有源站点合并成一个，无需切换 |
+| 单仓 · 肥猫 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/feimao.json` | 单独使用某一个源 |
+| 单仓 · 饭太硬 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/fantaiying.json` | |
+| 单仓 · 王二小 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/wangerxiao.json` | |
+| 单仓 · 老刘备 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/laoliubei.json` | |
+| 单仓 · 小马 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/xiaoma.json` | |
+| 单仓 · 讴歌 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/ouge.json` | |
+| 单仓 · 4K小盒子 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/4k.json` | |
+| 单仓 · 小盒子单仓 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/xiaohezi.json` | |
+| 单仓 · 拾光多仓 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/shiguang.json` | |
+| 单仓 · 挺好分享多仓 | `https://raw.githubusercontent.com/ljfbin2/tvbox-ysc-config/main/output/tinghao.json` | |
 
 > 多仓订阅与单仓文件里的地址由脚本根据 `GITHUB_REPOSITORY` 环境变量自动生成。若国内直连 raw.githubusercontent.com 慢，可套一层 `ghproxy` / `gh-proxy` 等加速前缀。
 
@@ -99,7 +99,7 @@ tvbox-ysc-config/
 
 ```bash
 pip install -r requirements.txt
-REPO=Lightconer/tvbox-ysc-config python scripts/update.py
+REPO=ljfbin2/tvbox-ysc-config python scripts/update.py
 ```
 
 ## 七、脚本特性
