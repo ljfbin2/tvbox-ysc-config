@@ -41,6 +41,7 @@ MAX_RETRIES = 2  # 单个地址最大尝试次数（仅对超时/连接类瞬态
 RETRY_BACKOFF = 2  # 重试基础等待秒数
 URL_INTERVAL = 1.0  # 每个地址之间的小间隔秒数（降低被限流概率）
 SOURCE_INTERVAL = 2  # 每个源之间的间隔秒数（降低被限流概率）
+SECOND_PASS_DELAY = 45  # 第一遍失败的源，等待多少秒后整轮重试第二遍（DNS/SSL 抖动多为分钟级）
 
 # 判定"像 TVBox 单仓配置"的顶层字段
 TVBOX_KEYS = ("sites", "spiders", "lives", "store", "exts", "parses", "flags")
@@ -211,7 +212,8 @@ def merge_configs(fetched):
             sites.append(s)
     merged["sites"] = sites
 
-    for field in ("lives", "parses", "doh", "rules", "flags", "exts"):
+    # ads 是各源自带的广告域名拦截名单，必须合并进聚合单仓，否则用单仓的人会失去全部广告拦截
+    for field in ("lives", "parses", "doh", "rules", "flags", "exts", "ads"):
         merged[field] = _merge_list(fetched, field)
 
     return merged
@@ -273,6 +275,53 @@ def write_badge(ok_count, total):
         json.dump(badge, f, ensure_ascii=False, indent=2)
 
 
+def try_fetch_source(src):
+    """依次尝试一个源的全部地址：成功返回 (entry, data)，全部失败返回 (entry, None)。
+    成功时已把最新配置写入 output/<id>.json。"""
+    name = src.get("name", "未知")
+    sid = src.get("id", name)
+    entry = {"id": sid, "name": name, "ok": False, "used_url": None, "error": None}
+    for url in src.get("urls", []):
+        try:
+            data = fetch_config(url)
+            out_path = os.path.join(OUTPUT_DIR, f"{sid}.json")
+            with open(out_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            entry["ok"] = True
+            entry["used_url"] = url
+            entry["error"] = None
+            print(f"[OK]   {name} <- {url}")
+            return entry, data
+        except Exception as e:  # noqa: BLE001
+            print(f"[FAIL] {name}  {url}  ->  {e}")
+            entry["error"] = str(e)
+        # 地址之间稍作间隔，避免被限流
+        time.sleep(URL_INTERVAL)
+    return entry, None
+
+
+def apply_cache_fallback(src, entry):
+    """全部地址都抓不到时，沿用 output 里上次成功的缓存；无可用缓存返回 None。"""
+    sid = src.get("id", src.get("name", "未知"))
+    cache_path = os.path.join(OUTPUT_DIR, f"{sid}.json")
+    if os.path.exists(cache_path):
+        try:
+            with open(cache_path, "r", encoding="utf-8") as f:
+                cached = json.load(f)
+            if is_valid_tvbox_config(cached):
+                entry["ok"] = True
+                entry["cached"] = True
+                entry["used_url"] = "(缓存)"
+                entry["error"] = None
+                print(f"[CACHE] {entry['name']}  使用上次缓存配置")
+                return cached
+        except Exception:
+            pass
+    entry["error"] = entry["error"] or "所有地址均失败"
+    print(f"[FAIL] {entry['name']}  全部地址失败")
+    return None
+
+
 def main() -> int:
     with open(CONFIG_FILE, "r", encoding="utf-8") as f:
         cfg = json.load(f)
@@ -295,66 +344,42 @@ def main() -> int:
     subscriptions = []
     fetched = []  # [(sid, name, data_dict), ...] 用于聚合单仓
 
-    ok_count = 0
+    # 第一遍：逐个源抓取
+    results = {}  # sid -> (src, entry, data_or_None)
+    order = []
     for src in cfg.get("sources", []):
-        name = src.get("name", "未知")
-        sid = src.get("id", name)
-        urls = src.get("urls", [])
-
-        entry = {"id": sid, "name": name, "ok": False, "used_url": None, "error": None}
-        saved = False
-
-        for url in urls:
-            try:
-                data = fetch_config(url)
-                out_path = os.path.join(OUTPUT_DIR, f"{sid}.json")
-                with open(out_path, "w", encoding="utf-8") as f:
-                    json.dump(data, f, ensure_ascii=False, indent=2)
-                entry["ok"] = True
-                entry["used_url"] = url
-                entry["error"] = None
-                subscriptions.append(
-                    {"name": name, "url": f"{raw_base}/{sid}.json"}
-                )
-                fetched.append((sid, name, data))
-                ok_count += 1
-                saved = True
-                print(f"[OK]   {name} <- {url}")
-                break
-            except Exception as e:  # noqa: BLE001
-                print(f"[FAIL] {name}  {url}  ->  {e}")
-                entry["error"] = str(e)
-
-            # 地址之间稍作间隔，避免被限流
-            time.sleep(URL_INTERVAL)
-
-        if not saved:
-            # 所有地址都失败：尝试使用上一次成功抓取的缓存文件
-            cache_path = os.path.join(OUTPUT_DIR, f"{sid}.json")
-            if os.path.exists(cache_path):
-                try:
-                    with open(cache_path, "r", encoding="utf-8") as f:
-                        cached = json.load(f)
-                    if is_valid_tvbox_config(cached):
-                        subscriptions.append(
-                            {"name": name, "url": f"{raw_base}/{sid}.json"}
-                        )
-                        fetched.append((sid, name, cached))
-                        entry["ok"] = True
-                        entry["cached"] = True
-                        entry["used_url"] = "(缓存)"
-                        ok_count += 1
-                        saved = True
-                        print(f"[CACHE] {name}  使用上次缓存配置")
-                except Exception:
-                    pass
-            if not saved:
-                entry["error"] = entry["error"] or "所有地址均失败"
-                print(f"[FAIL] {name}  全部地址失败")
-        status["sources"].append(entry)
-
+        entry, data = try_fetch_source(src)
+        results[entry["id"]] = (src, entry, data)
+        order.append(entry["id"])
         # 源之间稍作间隔，避免集中请求被限流
         time.sleep(SOURCE_INTERVAL)
+
+    # 第二遍：只重试第一遍失败的源。DNS 解析、SSL 握手、源站限流多为分钟级抖动，
+    # 隔一小段时间整轮再抓一次，成功率明显高于在第一遍里死磕单个地址。
+    failed = [sid for sid in order if results[sid][2] is None]
+    if failed:
+        names = "、".join(results[sid][1]["name"] for sid in failed)
+        print(f"\n第二遍重试 {len(failed)} 个失败源（{names}），等待 {SECOND_PASS_DELAY}s 后开始…")
+        time.sleep(SECOND_PASS_DELAY)
+        for sid in failed:
+            src, _entry, _ = results[sid]
+            entry2, data2 = try_fetch_source(src)
+            if data2 is not None:
+                results[sid] = (src, entry2, data2)
+            time.sleep(SOURCE_INTERVAL)
+
+    # 汇总：两遍仍失败的源走缓存兜底
+    ok_count = 0
+    for sid in order:
+        src, entry, data = results[sid]
+        if data is None:
+            data = apply_cache_fallback(src, entry)
+            results[sid] = (src, entry, data)
+        if data is not None:
+            subscriptions.append({"name": entry["name"], "url": f"{raw_base}/{sid}.json"})
+            fetched.append((sid, entry["name"], data))
+            ok_count += 1
+        status["sources"].append(entry)
 
     # 生成多仓订阅文件（影视仓"订阅/多仓"格式）
     sub_path = os.path.join(OUTPUT_DIR, "多仓订阅.json")
