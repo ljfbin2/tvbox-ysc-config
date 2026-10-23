@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-10-23 17:10:58",
+  "updated_at": "2026-10-23 17:56:25",
   "repo": "ljfbin2/tvbox-ysc-config",
   "sources": [
     {
@@ -12,9 +12,9 @@
     {
       "id": "fantaiying",
       "name": "饭太硬",
-      "ok": false,
-      "used_url": null,
-      "error": "HTTPConnectionPool(host='www.xn--sss604efuw.xyz', port=80): Max retries exceeded with url: /tv (Caused by NameResolutionError(\"HTTPConnection(host='www.xn--sss604efuw.xyz', port=80): Failed to resolve 'www.xn--sss604efuw.xyz' ([Errno -2] Name or service not known)\"))"
+      "ok": true,
+      "used_url": "https://raw.githubusercontent.com/foxxxx001/tvbox-config/main/output/fantaiying.json",
+      "error": null
     },
     {
       "id": "wangerxiao",
@@ -41,9 +41,8 @@
       "id": "ouge",
       "name": "讴歌",
       "ok": true,
-      "used_url": "(缓存)",
-      "error": null,
-      "cached": true
+      "used_url": "https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/ouge.json",
+      "error": null
     },
     {
       "id": "4k",

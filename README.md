@@ -12,16 +12,16 @@
 ## 一、源可用性状态
 
 <!-- STATUS_START -->
-> 🔄 最近更新：2026-10-23 17:10:58（北京时间） · 成功 **9/10** 个源
+> 🔄 最近更新：2026-10-23 17:56:25（北京时间） · 成功 **10/10** 个源
 
 | 配置源 | 状态 | 使用地址 |
 | --- | --- | --- |
 | 肥猫 | ✅ 成功 | `http://肥猫.net/tv` |
-| 饭太硬 | ❌ 失败 | HTTPConnectionPool(host='www.xn--sss604efuw.xyz', port=80... |
+| 饭太硬 | ✅ 成功 | `https://raw.githubusercontent.com/foxxxx001/tvbox-config/main/output/fantaiying.json` |
 | 王二小 | ✅ 成功 | `https://d.kstore.dev/download/9280/wex.json` |
 | 老刘备 | ✅ 成功 | `https://raw.liucn.cc/box/m.json` |
 | 小马 | ✅ 成功 | `https://szyyds.cn/tv/x.json` |
-| 讴歌 | 📦 缓存 | 上次成功配置（本次更新未抓到，沿用缓存） |
+| 讴歌 | ✅ 成功 | `https://raw.githubusercontent.com/Lightconer/tvbox-ysc-config/main/output/ouge.json` |
 | 4K小盒子 | ✅ 成功 | `http://xhztv.top/4k.json` |
 | 小盒子单仓 | ✅ 成功 | `http://xhztv.top/xhz` |
 | 拾光多仓 | ✅ 成功 | `http://xmbjm.fh4u.org/dc.txt` |
