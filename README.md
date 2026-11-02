@@ -12,11 +12,11 @@
 ## 一、源可用性状态
 
 <!-- STATUS_START -->
-> 🔄 最近更新：2026-11-02 16:51:55（北京时间） · 成功 **10/10** 个源
+> 🔄 最近更新：2026-11-03 06:37:51（北京时间） · 成功 **10/10** 个源
 
 | 配置源 | 状态 | 使用地址 |
 | --- | --- | --- |
-| 肥猫 | ✅ 成功 | `http://肥猫.net/tv` |
+| 肥猫 | 📦 缓存 | 上次成功配置（本次更新未抓到，沿用缓存） |
 | 饭太硬 | ✅ 成功 | `https://raw.githubusercontent.com/foxxxx001/tvbox-config/main/output/fantaiying.json` |
 | 王二小 | ✅ 成功 | `https://d.kstore.dev/download/9280/wex.json` |
 | 老刘备 | ✅ 成功 | `https://raw.liucn.cc/box/m.json` |
