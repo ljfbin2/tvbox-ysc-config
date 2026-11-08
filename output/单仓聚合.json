@@ -596,11 +596,7 @@
       "playerType": "2",
       "searchable": 1,
       "quickSearch": 1,
-      "changeable": 1,
-      "ext": {
-        "v2": "1",
-        "deviceId": "http://www.饭太硬.net/6dc66339e1314f88"
-      }
+      "changeable": 1
     },
     {
       "key": "立播",
@@ -749,7 +745,7 @@
     },
     {
       "key": "AiDj",
-      "name": "❤️AI┃短漫剧",
+      "name": "❤️AI剧┃弹幕",
       "type": 3,
       "api": "csp_AiDjGuard",
       "ext": {
