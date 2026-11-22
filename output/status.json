@@ -1,14 +1,13 @@
 {
-  "updated_at": "2026-11-22 04:23:44",
+  "updated_at": "2026-11-22 17:20:19",
   "repo": "ljfbin2/tvbox-ysc-config",
   "sources": [
     {
       "id": "feimao",
       "name": "肥猫",
       "ok": true,
-      "used_url": "(缓存)",
-      "error": null,
-      "cached": true
+      "used_url": "https://6296.kstore.vip/facat.json",
+      "error": null
     },
     {
       "id": "fantaiying",
